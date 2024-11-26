@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 
 class Window extends JFrame {
     private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 600;
+    private boolean gameStarted = false;
 
     public void button() {
         String message = "Snake";
@@ -13,7 +15,6 @@ class Window extends JFrame {
         label.setFont(f);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
-
         label.setSize(label.getPreferredSize());
         label.setLocation(DEFAULT_WIDTH / 2 - label.getWidth() / 2, 100);
         add(label);
@@ -36,6 +37,36 @@ class Window extends JFrame {
         add(buttonExit);
 
         buttonExit.addActionListener(e -> System.exit(0));
+
+        buttonStart.addActionListener(e -> {
+            buttonStart.setVisible(false);
+            buttonExit.setVisible(false);
+            label.setVisible(false);
+
+            gameStarted = true;
+            repaint();
+        });
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        if (gameStarted) {
+            Random rand = new Random();
+            int x = rand.nextInt(DEFAULT_WIDTH - 50);
+            int y = rand.nextInt(DEFAULT_HEIGHT - 50);
+
+            ImageIcon icon = new ImageIcon("./img/apple.png");
+            Image image = icon.getImage();
+
+            g.drawImage(image, x, y, this);
+        }
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+
     }
 
     public Window() {
